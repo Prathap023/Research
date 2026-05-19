@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Methodology & IPR</title>
+    <style>
+        /* CSS Variables for New Modern Theme */
+        :root {
+            --bg-body: #f3f4f6;
+            --bg-sidebar: #111827;
+            --text-main: #374151;
+            --text-light: #9ca3af;
+            --primary-accent: #4338ca;
+            /* Vibrant Indigo */
+            --secondary-accent: #8b5cf6;
+            --highlight: #f59e0b;
+            /* Amber */
+            --card-bg: #ffffff;
+            --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --transition-speed: 0.4s;
+            --sidebar-width: 260px;
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.7;
+            display: flex;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: #111827;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        p {
+            margin-bottom: 12px;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+            list-style-type: none;
+            /* Custom bullets */
+        }
+
+        ul li {
+            position: relative;
+            margin-bottom: 8px;
+            padding-left: 15px;
+        }
+
+        ul li::before {
+            content: "•";
+            color: var(--primary-accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: absolute;
+            left: -5px;
+            top: -2px;
+        }
+
+        /* Sidebar Navigation (Desktop) */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background-color: var(--bg-sidebar);
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            z-index: 100;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-header {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--primary-accent);
+            padding-bottom: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1.05rem;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all var(--transition-speed) ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background-color: rgba(67, 56, 202, 0.2);
+            color: #fff;
+            transform: translateX(5px);
+            border-left: 4px solid var(--primary-accent);
+        }
+
+        /* Mobile Header (Hidden on Desktop) */
+        .mobile-header {
+            display: none;
+            width: 100%;
+            background-color: var(--bg-sidebar);
+            padding: 15px 20px;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-title {
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 60px 40px;
+            width: calc(100% - var(--sidebar-width));
+            min-height: 100vh;
+        }
+
+        /* Section Headers */
+        section {
+            margin-bottom: 80px;
+            padding-top: 20px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--bg-sidebar);
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-accent), var(--secondary-accent));
+            bottom: -10px;
+            left: 0;
+            border-radius: 5px;
+        }
+
+        /* Masonry-style Grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            align-items: start;
+            /* Prevents stretching to match row height */
+        }
+
+        /* Modern Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(30px);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-number {
+            display: inline-block;
+            background-color: rgba(67, 56, 202, 0.1);
+            color: var(--primary-accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        /* Stylized Definitions */
+        .definition {
+            font-style: normal;
+            background: linear-gradient(to right, rgba(67, 56, 202, 0.05), transparent);
+            padding: 15px 20px;
+            border-left: 4px solid var(--primary-accent);
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95rem;
+            color: #4b5563;
+        }
+
+        .definition strong {
+            color: var(--primary-accent);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .highlight-good {
+            color: #059669;
+            /* Emerald */
+            font-weight: 600;
+        }
+
+        .highlight-bad {
+            color: #dc2626;
+            /* Red */
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            :root {
+                --sidebar-width: 0px;
+            }
+
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+                transition: transform var(--transition-speed) ease;
+                padding-top: 80px;
+                /* Space for mobile header */
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .mobile-header {
+                display: flex;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 100px 20px 40px 20px;
+                /* Top padding clears mobile header */
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="mobile-header">
+        <div class="mobile-title">RM & IPR</div>
+        <button class="menu-btn" id="menu-btn">☰</button>
+    </div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">RM Notes</div>
+        <nav class="nav-links">
+            <a href="#unit1">Unit I: Methodology</a>
+            <a href="#defining-problem">Defining Problem</a>
+            <a href="#unit2">Unit II: Literature</a>
+            <a href="#research-design">Research Design</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+
+        <section id="unit1">
+            <h2 class="section-title">UNIT I – RESEARCH METHODOLOGY</h2>
+            <div class="grid-container">
+
+                <div class="card animate-on-scroll">
+                    <span class="card-number">01</span>
+                    <h3>Introduction to Research</h3>
+                    <div class="definition">
+                        <strong>Meaning & Definition</strong>
+                        Research is a systematic and scientific process used to solve problems and discover new
+                        knowledge.
+                    </div>
+                    <p><strong>It involves:</strong></p>
+                    <ul>
+                        <li>Identifying a problem</li>
+                        <li>Formulating a hypothesis</li>
+                        <li>Collecting data</li>
+                        <li>Analyzing data</li>
+                        <li>Drawing conclusions</li>
+                    </ul>
+                    <div class="definition">
+                        <strong>Standard Definitions</strong>
+                        “Research is a careful investigation or inquiry specially through search for new facts in any
+                        branch of knowledge.”<br><br>
+                        “Research is a systematized effort to gain new knowledge.” – Redman and Mory
+                    </div>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <span class="card-number">02 & 03</span>
+                    <h3>Objectives & Motivation</h3>
+                    <p><strong>Objectives:</strong></p>
+                    <ul>
+                        <li>Find hidden truths and new knowledge</li>
+                        <li>Gain familiarity with a phenomenon</li>
+                        <li>Achieve new insights</li>
+                        <li>Describe characteristics of individuals or groups accurately</li>
+                        <li>Determine frequency of occurrence</li>
+                        <li>Identify relationships between variables</li>
+                        <li>Test hypotheses</li>
+                    </ul>
+                    <p><strong>Reasons for Doing Research (Motivation):</strong></p>
+                    <ul>
+                        <li>To earn a research degree</li>
+                        <li>To solve unsolved problems</li>
+                        <li>Intellectual joy of creative work</li>
+                        <li>Service to society</li>
+                        <li>Gain recognition and respect</li>
+                    </ul>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <span class="card-number">04</span>
+                    <h3>Types of Research (A-D)</h3>
+                    <h4>A. Descriptive</h4>
+                    <div class="definition">Research that describes the present state of affairs.</div>
+                    <ul>
+                        <li>Uses surveys and fact-finding enquiries.</li>
+                        <li>Researcher has no control over variables.</li>
+                        <li>Reports what is happening.</li>
+                    </ul>
+                    <h4>B. Analytical</h4>
+                    <div class="definition">Research that analyzes existing information critically.</div>
+                    <ul>
+                        <li>Uses already available facts/data.</li>
+                        <li>Makes critical evaluation.</li>
+                    </ul>
+                    <h4>C. Applied</h4>
+                    <div class="definition">Research aimed at solving practical problems (e.g., Marketing or Evaluation
+                        research).</div>
+                    <h4>D. Fundamental</h4>
+                    <div class="definition">Research focused on formulation of theories and generalizations (Knowledge
+                        for knowledge’s sake; Pure/basic research).</div>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <span class="card-number">04</span>
+                    <h3>Types of Research (E-H)</h3>
+                    <h4>E. Quantitative</h4>
+                    <div class="definition">Research based on measurement of quantity or amount. Expressed in numerical
+                        form.</div>
+                    <h4>F. Qualitative</h4>
+                    <div class="definition">Research related to qualitative phenomena such as opinions and feelings
+                        (e.g., Motivation research).</div>
+                    <h4>G. Conceptual</h4>
+                    <div class="definition">Research related to abstract ideas or theories. Used to develop new concepts
+                        or reinterpret existing ones.</div>
+                    <h4>H. Empirical</h4>
+                    <div class="definition">Data-based research verified through observation or experiment.
+                        Supports/disproves hypothesis based on experience.</div>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <span class="card-number">05</span>
+                    <h3>Research Approaches</h3>
+                    <h4>A. Quantitative Approach</h4>
+                    <ul>
+                        <li><strong>Inferential:</strong> Uses sample data to infer characteristics of population
+                            (Example: Survey research).</li>
+                        <li><strong>Experimental:</strong> Manipulates variables to observe effects (Greater control
+                            over research environment).</li>
+                        <li><strong>Simulation:</strong> Construction of artificial environment for generating data.
+                        </li>
+                    </ul>
+                    <h4>B. Qualitative Approach</h4>
+                    <div class="definition">Subjective assessment of attitudes, opinions, and behavior. Not subjected to
+                        rigorous quantitative analysis.</div>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <span class="card-number">06 & 07</span>
+                    <h3>Significance, Methods & Methodology</h3>
+                    <p><strong>Significance:</strong> Helps obtain higher degrees, source of livelihood, outlet for new
+                        ideas, develops creative work, and helps formulate new theories.</p>
+                    <div class="definition">
+                        <strong>Research Methods</strong>
+                        Techniques used for conducting research. Groups include: Data collection methods, Statistical
+                        techniques, Evaluation techniques.
+                    </div>
+                    <div class="definition">
+                        <strong>Research Methodology</strong>
+                        Science of understanding how research is done. Includes the logic behind methods and why a
+                        particular method is used.
+                    </div>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <span class="card-number">08 & 09</span>
+                    <h3>Scientific Method & Process</h3>
+                    <div class="definition">Research is a systematic and scientific search for knowledge. Scientific
+                        method is the logical and organized way of doing research.</div>
+                    <p><strong>Features of Scientific Method:</strong> Systematic, Logical, Empirical, Controlled,
+                        Objective, Replicable.</p>
+                    <p><strong>Research Process Steps:</strong></p>
+                    <ol style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>Identify problem</li>
+                        <li>Literature review</li>
+                        <li>Hypothesis formulation</li>
+                        <li>Research design</li>
+                        <li>Data collection</li>
+                        <li>Data analysis</li>
+                        <li>Conclusion and report writing</li>
+                    </ol>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <span class="card-number">10 & 11</span>
+                    <h3>Criteria & Problems in India</h3>
+                    <p><strong>Criteria of Good Research:</strong></p>
+                    <ul>
+                        <li>Purpose clearly defined & uses common concepts</li>
+                        <li>Procedure explained clearly</li>
+                        <li>Results objective & honest reporting (Acknowledges flaws)</li>
+                        <li>Appropriate statistical tests & reliable outcome measures</li>
+                        <li>Conclusions justified with data</li>
+                        <li>Logical and systematic</li>
+                    </ul>
+                    <p><strong>Problems Encountered in India:</strong></p>
+                    <ul>
+                        <li>Lack of scientific training & insufficient interaction</li>
+                        <li>Lack of confidence among participants</li>
+                        <li>Overlapping research studies</li>
+                        <li>Inadequate library management</li>
+                        <li>Difficulty in obtaining published data</li>
+                        <li>Problem of conceptualization</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="defining-problem">
+            <h2 class="section-title">DEFINING THE RESEARCH PROBLEM</h2>
+            <div class="grid-container">
+
+                <div class="card animate-on-scroll">
+                    <span class="card-number">01 - 04</span>
+                    <h3>Defining the Problem</h3>
+                    <div class="definition">
+                        <strong>What is a Research Problem?</strong>
+                        A question or issue that needs to be solved through research.
+                    </div>
+
+                    <h4>Selecting the Problem</h4>
+                    <p>A Good Problem Should Be: Interesting, Feasible, Useful, and Not too broad or narrow.</p>
+                    <p><span class="highlight-bad">Bad Example:</span> Study cloud computing<br>
+                        <span class="highlight-good">Good Example:</span> Improve security in hybrid cloud using AI
+                    </p>
+
+                    <h4>Necessity of Defining</h4>
+                    <ul>
+                        <li>Gives direction to research</li>
+                        <li>Helps identify required data and select techniques</li>
+                        <li>Avoids confusion</li>
+                    </ul>
+
+                    <h4>Technique Involved</h4>
+                    <ol style="margin-left: 20px;">
+                        <li>Statement of problem in general way</li>
+                        <li>Understanding nature of problem</li>
+                        <li>Surveying literature</li>
+                        <li>Developing ideas through discussions</li>
+                        <li>Rephrasing problem into working proposition</li>
+                    </ol>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="unit2">
+            <h2 class="section-title">UNIT II – LITERATURE REVIEW</h2>
+            <div class="grid-container">
+
+                <div class="card animate-on-scroll">
+                    <span class="card-number">01 & 02</span>
+                    <h3>Literature Review & Sources</h3>
+                    <div class="definition">
+                        <strong>Literature Review</strong>
+                        A collection of research publications, books, and documents related to the problem. Purpose is
+                        to avoid repeating work, understand current progress, learn techniques, and identify gaps.
+                    </div>
+                    <h4>Primary Sources</h4>
+                    <div class="definition">Data collected directly by researcher (e.g., Surveys, Interviews,
+                        Experiments, Observations).</div>
+                    <h4>Secondary Sources</h4>
+                    <div class="definition">Data collected by someone else and already available (e.g., Books, Research
+                        papers, Websites, Reports).</div>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <span class="card-number">03 - 06</span>
+                    <h3>Reviews, Monographs & Patents</h3>
+                    <h4>3. Review</h4>
+                    <div class="definition">Summarizes and analyzes many research studies on a topic. No new
+                        experiments, combines multiple studies, explains trends/gaps.</div>
+                    <h4>4. Monograph</h4>
+                    <div class="definition">A detailed book/report on a single topic. Focuses on one topic, more
+                        detailed than textbooks.</div>
+                    <h4>5. Patents</h4>
+                    <div class="definition">A legal document giving exclusive rights for an invention. Shows innovation,
+                        contains technical details, protected by law. <em>Used to avoid copying and understand latest
+                            technologies.</em></div>
+                    <h4>6. Research Databases</h4>
+                    <p>Includes Journal databases, Reference databases, Online repositories.</p>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <span class="card-number">07 & 08</span>
+                    <h3>Web as a Source & Searching</h3>
+                    <p><strong>Uses:</strong> Access journals/books, collect data, publish research, communication.</p>
+                    <p><strong>Online Tools:</strong> E-mail, E-journals, Video conferencing, Online questionnaires.</p>
+                    <p><strong>Pros vs Cons:</strong></p>
+                    <ul>
+                        <li><em>Advantages:</em> Saves time, Low cost, Fast communication, Wide reach.</li>
+                        <li><em>Challenges:</em> Reliability issues, Ethical concerns, Information overload.</li>
+                    </ul>
+                    <p><strong>Searching Activities:</strong> Searching journal articles, finding conference details,
+                        finding databases, collecting reference materials.</p>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <span class="card-number">09 - 11</span>
+                    <h3>Critical Review & Gaps</h3>
+                    <div class="definition">
+                        <strong>9. Critical Literature Review</strong>
+                        Evaluating previous studies critically. Includes summarizing, evaluating strengths/weaknesses,
+                        comparing, and identifying gaps.
+                    </div>
+                    <div class="definition">
+                        <strong>10. Identifying Gap Areas</strong>
+                        Finding missing or less-studied areas. Identified by reading future work sections, studying
+                        limitations, finding missing data, and conflicting results.
+                    </div>
+                    <div class="definition">
+                        <strong>11. Working Hypothesis</strong>
+                        A prediction made before starting research. Keeps research focused and defines the area.
+                        Developed via expert discussions, record examination, similar studies review, and small
+                        interviews. Must be clear, testable, and properly written.
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="research-design">
+            <h2 class="section-title">RESEARCH DESIGN</h2>
+            <div class="grid-container">
+
+                <div class="card animate-on-scroll">
+                    <span class="card-number">01 - 03</span>
+                    <h3>Meaning, Need & Features</h3>
+                    <div class="definition">
+                        <strong>1. Meaning of Research Design</strong>
+                        The blueprint or overall plan of research. Specifies what data to collect, from where, how to
+                        collect, and how to analyze.
+                    </div>
+                    <h4>2. Need for Research Design</h4>
+                    <ul>
+                        <li>Provides direction</li>
+                        <li>Efficient use of resources</li>
+                        <li>Minimizes errors</li>
+                        <li>Improves reliability and validity</li>
+                    </ul>
+                    <h4>3. Features of Good Design</h4>
+                    <ul>
+                        <li>Clear objective, Simplicity, Flexibility</li>
+                        <li>Accuracy, Reliability, Validity</li>
+                        <li>Economy, Minimizes bias</li>
+                    </ul>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <span class="card-number">04 & 05</span>
+                    <h3>Components & Types</h3>
+                    <h4>4. Components</h4>
+                    <ul>
+                        <li><strong>Sampling Design:</strong> Selection of samples</li>
+                        <li><strong>Observational Design:</strong> Method of data collection</li>
+                        <li><strong>Statistical Design:</strong> Data analysis techniques</li>
+                        <li><strong>Operational Design:</strong> Execution plan and schedule</li>
+                    </ul>
+                    <h4>5. Types of Research Design</h4>
+                    <ul>
+                        <li><strong>Exploratory:</strong> Used when problem is not clearly defined</li>
+                        <li><strong>Descriptive:</strong> Describes characteristics of population</li>
+                        <li><strong>Diagnostic:</strong> Identifies causes of problems</li>
+                        <li><strong>Hypothesis Testing:</strong> Tests hypotheses and cause-effect relationships</li>
+                    </ul>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <span class="card-number">06</span>
+                    <h3>Important Concepts (Part 1)</h3>
+                    <div class="definition">
+                        <strong>Variables</strong>
+                        Measurable characteristics that can change.
+                        <br>- <em>Independent:</em> Cause
+                        <br>- <em>Dependent:</em> Effect
+                        <br>- <em>Extraneous:</em> Variables not part of study but affecting results.
+                    </div>
+                    <div class="definition">
+                        <strong>Hypothesis</strong>
+                        Testable statement relating variables. Includes Null Hypothesis (H₀) and Alternative Hypothesis
+                        (H₁).
+                    </div>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <span class="card-number">06 & 07</span>
+                    <h3>Concepts & Principles</h3>
+                    <h4>Additional Concepts</h4>
+                    <ul>
+                        <li><strong>Control:</strong> Minimizing effects of extraneous variables.</li>
+                        <li><strong>Confounded Relationship:</strong> Relationship affected by extraneous variables.
+                        </li>
+                        <li><strong>Experimental/Control Groups:</strong> Control Group → normal conditions;
+                            Experimental Group → receives treatment.</li>
+                        <li><strong>Treatments:</strong> Different conditions applied.</li>
+                        <li><strong>Experimental Units:</strong> Units on which experiments are conducted.</li>
+                    </ul>
+                    <h4>7. Basic Principles of Experimental Design</h4>
+                    <ul>
+                        <li><strong>Replication:</strong> Repeating experiment multiple times (Improves
+                            reliability/accuracy).</li>
+                        <li><strong>Randomization:</strong> Assigning treatments randomly (Eliminates bias).</li>
+                        <li><strong>Local Control:</strong> Controlling known extraneous variables (Reduces
+                            variability).</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Research Methodology & IPR. Created from Uploaded Documents.</p>
+        </footer>
+
+    </main>
+
+    <script>
+        // Mobile Sidebar Toggle Logic
+        const menuBtn = document.getElementById('menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // Close sidebar on mobile when a link is clicked
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 992) {
+                    sidebar.classList.remove('active');
+                }
+            });
+        });
+
+        // Intersection Observer for Smooth Scroll Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Active Link Highlighting on Scroll
+        const sections = document.querySelectorAll('section');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
